@@ -1,6 +1,6 @@
 <?php
 
-namespace WolfDen133_Besher\HvS;
+namespace ManHunt\HvS;
 
 use pocketmine\Server;
 use pocketmine\Player;
