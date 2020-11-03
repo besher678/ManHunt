@@ -1,0 +1,6 @@
+---
+name: ManHunt
+version: 0.0.1
+main: ManHunt\ManHunt\Main
+api: 3.15.2
+...
