@@ -80,7 +80,7 @@ class Main extends PluginBase implements Listener{
         if (!$config->get("SR") = $player){
             if ($config->get("GS") = "true"){
                 $compass = ItemFactory::get(Item::COMPASS);
-                $compass->setCustomName("§9SpeedRunner §2Tracker");
+                $compass->setCustomName("§r§f§9SpeedRunner §2Tracker");
                 $unbreaking = new EnchantmentInstance(Enchantment::getEnchantment(Enchantment::UNBREAKING), 10);
                 $compass->addEnchantment($unbreaking);
                 $player->getInventory()->setItem(8, $compass);
