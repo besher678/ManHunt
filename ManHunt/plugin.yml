@@ -4,19 +4,9 @@ version: 1.0.0
 main: ManHunt\ManHunt\Main
 api: 3.0.0
 commands:
-  speedrunner:
-    description: Set speedrunner /speedrunner <username>
-    usage: /speedrunner <username>
-  hunter:
-    description: Set Hunter /Hunter <username>
-    usage: /hunter <username>
-  start:
-    description: Start the game
-    usage: /start
-  end:
-    description: End the game
-    usage: /end
-  compass:
-    description: Give your self or others a tracking compass
-    usage: /compass <username>
+  hvs:
+    description: Opens the HvS UI!
+    permission: HvS.use
+  HvS.use:
+    description: 
 ...
