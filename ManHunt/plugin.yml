@@ -4,9 +4,9 @@ version: 1.0.0
 main: ManHunt\ManHunt\Main
 api: 3.0.0
 commands:
-  hvs:
-    description: Opens the HvS UI!
-    permission: HvS.use
+  manhunt:
+    description: Opens the manhunt UI!
+    permission: manhunt.use
   HvS.use:
     description: 
 ...
