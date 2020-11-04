@@ -32,8 +32,6 @@ class Compass implements Listener{
                 }
             }
         }
-}
-        }
 
         private function setSpawnPositionPacket(Player $player, Vector3 $pos) : void{
             $pk = new SetSpawnPositionPacket();
