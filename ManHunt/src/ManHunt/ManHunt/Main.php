@@ -101,9 +101,9 @@ class Main extends PluginBase implements Listener{
     public function onCommand(CommandSender $sender, Command $cmd, String $label, Array $args) : bool {
 
 		switch($cmd->getName()){
-			case "hvs":
+			case "manhunt":
 			if($sender instanceof Player){
-                if($sender->hasPermission("HvS.use")){
+                if($sender->hasPermission("manhunt.use")){
 					$this->openHvS($sender);
 				} else {
 					$sender->sendMessage("§cYou do not have permission to execute this command!");
