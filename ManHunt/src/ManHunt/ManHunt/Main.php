@@ -89,11 +89,11 @@ class Main extends PluginBase implements Listener{
     }
     public function onCompassDrop(PlayerDropItemEvent $devent, PlayerItemHeldEvent $ievent){
         $player = $devent->getPlayer();
-        $item = $ievent->getItem();
+        $item = $player->getItem();
         $config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
         if($item->getId("345")){
             if($player->getLevel() === $this->getServer()->getLevelByName($config->get("World")){
-                $event->setCancelled(true);
+                $devent->setCancelled(true);
             }
         }
     }
