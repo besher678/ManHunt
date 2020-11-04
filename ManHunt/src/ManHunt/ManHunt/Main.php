@@ -155,6 +155,10 @@ class Main extends PluginBase implements Listener{
                                         $tp = $p->teleport($this->getServer()->getLevelByName($world)->getSafeSpawn());
                                     }
                                     sleep (1);
+                                    $player->sendTitle("§c5");
+                                    sleep (1);
+                                    $player->sendTitle("§c4");
+                                    sleep (1);
                                     $player->sendTitle("§c3");
                                     sleep (1);
                                     $player->sendTitle("§e2");
@@ -171,6 +175,10 @@ class Main extends PluginBase implements Listener{
                                     } else {
                                         $tp = $p->teleport($this->getServer()->getLevelByName($world)->getSafeSpawn());
                                     }
+                                    sleep (1);
+                                    $player->sendTitle("§c5");
+                                    sleep (1);
+                                    $player->sendTitle("§c4");
                                     sleep (1);
                                     $player->sendTitle("§c3");
                                     sleep (1);
