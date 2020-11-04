@@ -20,9 +20,8 @@ class Compass implements Listener{
     public function onItemHeld(PlayerItemHeldEvent $e)
     {
         $player = $e->getPlayer();
-      $item = $e->getItem()->getId() === ItemIds::COMPASS;
-		if($item){
-      if($item->getCustomName() === "Player Tracker"){
+      $itemcompass = ItemFactory::get(Item::COMPASS);
+                if($itemcompass->getCustomName() === "§r§f§9SpeedRunner §2Tracker"){
           $nearPlayer = $this->calculateNearestPlayer($player);
 				if($nearPlayer instanceof Player){
 					$myVector = $player->asVector3();
@@ -33,6 +32,7 @@ class Compass implements Listener{
                 }
             }
         }
+}
         }
 
         private function setSpawnPositionPacket(Player $player, Vector3 $pos) : void{
