@@ -77,10 +77,11 @@ class Main extends PluginBase implements Listener{
     
     public function onRespawn(PlayerRespawnEvent $event){
         $player = $event->getPlayer();
-        if (!$config->get("SR") = $player){
-            if ($config->get("GS") = "true"){
+        $config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
+        if (!$config->get("SR") == $player){
+            if ($config->get("GS") == "true"){
                 $compass = ItemFactory::get(Item::COMPASS);
-                $compass->setCustomName("§r§f§9SpeedRunner §2Tracker");
+                $compass->setCustomName("§9SpeedRunner §2Tracker");
                 $unbreaking = new EnchantmentInstance(Enchantment::getEnchantment(Enchantment::UNBREAKING), 10);
                 $compass->addEnchantment($unbreaking);
                 $player->getInventory()->setItem(8, $compass);
@@ -89,21 +90,17 @@ class Main extends PluginBase implements Listener{
     }
     public function onCompassDrop(PlayerDropItemEvent $devent, PlayerItemHeldEvent $ievent){
         $player = $devent->getPlayer();
-        $item = $player->getItem();
-        $config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
-        if($item->getId("345")){
-            if($player->getLevel() === $this->getServer()->getLevelByName($config->get("World")){
-                $devent->setCancelled(true);
-            }
+        $item = $ievent->getItem();
+        if($id = $item->getId()){
+            $devent->setCancelled(true);
         }
     }
-    
     public function onCommand(CommandSender $sender, Command $cmd, String $label, Array $args) : bool {
 
 		switch($cmd->getName()){
-			case "manhunt":
+			case "hvs":
 			if($sender instanceof Player){
-                if($sender->hasPermission("manhunt.use")){
+                if($sender->hasPermission("HvS.use")){
 					$this->openHvS($sender);
 				} else {
 					$sender->sendMessage("§cYou do not have permission to execute this command!");
@@ -148,54 +145,15 @@ class Main extends PluginBase implements Listener{
                             $world = $config->get("World");
                             $world = $world;
                             foreach($this->getServer()->getOnlinePlayers() as $p){
-                                if ($config->get("SR") == $player->getName()){
-                                    if ($config->get("World") == ""){
-                                        $tp = $p->teleport($this->getServer()->getDefaultLevel()->getSafeSpawn());
-                                    } else {
-                                        $tp = $p->teleport($this->getServer()->getLevelByName($world)->getSafeSpawn());
-                                    }
-                                    sleep (1);
-                                    $player->sendTitle("§c5");
-                                    sleep (1);
-                                    $player->sendTitle("§c4");
-                                    sleep (1);
-                                    $player->sendTitle("§c3");
-                                    sleep (1);
-                                    $player->sendTitle("§e2");
-                                    sleep (1);
-                                    $player->sendTitle("§a1");
-                                    sleep (1);
-                                    $player->sendTitle("§bYou are a \n§aSpeedRunner.");
-                                    $player->sendTip("§3Mission: §aSurvive and beat the game!");
-                                    $name = $player->getName();
-                                    $player->sendMessage("§aGood luck " . $name);
+                                if ($config->get("World") == ""){
+                                $tp = $p->teleport($this->getServer()->getDefaultLevel()->getSafeSpawn());
                                 } else {
-                                    if ($config->get("World") == ""){
-                                        $tp = $p->teleport($this->getServer()->getDefaultLevel()->getSafeSpawn());
-                                    } else {
-                                        $tp = $p->teleport($this->getServer()->getLevelByName($world)->getSafeSpawn());
-                                    }
-                                    sleep (1);
-                                    $player->sendTitle("§c5");
-                                    sleep (1);
-                                    $player->sendTitle("§c4");
-                                    sleep (1);
-                                    $player->sendTitle("§c3");
-                                    sleep (1);
-                                    $player->sendTitle("§e2");
-                                    sleep (1);
-                                    $player->sendTitle("§a1");
-                                    sleep (1);
-                                    $player->sendTitle("§bYou are a \n§cHunter");
-                                    $player->sendTip("§3Mission: §cKill §c". $config->get("SR"));
-                                    $name = $player->getName();
-                                    $player->sendMessage("§aGood luck " . $name);
-                                    $compass = ItemFactory::get(Item::COMPASS);
-                                    $compass->setCustomName("§9SpeedRunner §2Tracker");
-                                    $unbreaking = new EnchantmentInstance(Enchantment::getEnchantment(Enchantment::UNBREAKING), 10);
-                                    $compass->addEnchantment($unbreaking);
-                                    $player->getInventory()->setItem(8, $compass);
-                                } 
+                                    $tp = $p->teleport($this->getServer()->getLevelByName($world)->getSafeSpawn());
+                                }
+                                $tp;
+                                $this->getScheduler()->scheduleRepeatingTask(new CountDownTimer, 10);
+                                $name = $player->getName();
+                                $player->sendMessage("§aGood luck " . $name);
                             }
                         }else{
                             $player->sendMessage("§cThere is no SpeedRunner set!");
