@@ -10,6 +10,14 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\event\player\PlayerDeathEvent;
+use pocketmine\event\player\PlayerRespawnEvent;
+
+use pocketmine\item\Item;
+use pocketmine\item\ItemIds;
+use pocketmine\item\ItemFactory;
+
+use pocketmine\item\enchantment\Enchantment;
+use pocketmine\item\enchantment\EnchantmentInstance;
 
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
@@ -67,6 +75,27 @@ class Main extends PluginBase implements Listener{
         }
     }
     
+    public function onRespawn(PlayerRespawnEvent $event){
+        $player = $event->getPlayer();
+        if (!$config->get("SR") = $player){
+            if ($config->get("GS") = "true"){
+                $compass = ItemFactory::get(Item::COMPASS);
+                $compass->setCustomName("§9SpeedRunner §2Tracker");
+                $unbreaking = new EnchantmentInstance(Enchantment::getEnchantment(Enchantment::UNBREAKING), 10);
+                $compass->addEnchantment($unbreaking);
+                $player->getInventory()->setItem(8, $compass);
+            }
+        }
+    }
+    public function onCompassDrop(PlayerDropItemEvent $devent, PlayerItemHeldEvent $ievent){
+        $player = $devent->getPlayer();
+        $item = $ievent->getItem();
+        if($id = $item->getId())
+        if($player->getLevel() === $this->getServer()->getLevelByName("world")){
+			$event->setCancelled(true);
+			}
+		}
+    
     public function onCommand(CommandSender $sender, Command $cmd, String $label, Array $args) : bool {
 
 		switch($cmd->getName()){
@@ -79,7 +108,7 @@ class Main extends PluginBase implements Listener{
 				}
 			} else {
 				$sender->sendMessage("§cPlease use this command in-game!");
-			}
+            } 
 		}
 	return true;
     }
@@ -130,7 +159,7 @@ class Main extends PluginBase implements Listener{
                                     sleep (1);
                                     $player->sendTitle("§a1");
                                     sleep (1);
-                                    $player->sendTitle("§bYou are a \n§aSpeedRunner, §bjust survive.");
+                                    $player->sendTitle("§bYou are a \n§aSpeedRunner.");
                                     $player->sendTip("§3Mission: §aSurvive and beat the game!");
                                     $name = $player->getName();
                                     $player->sendMessage("§aGood luck " . $name);
@@ -151,6 +180,11 @@ class Main extends PluginBase implements Listener{
                                     $player->sendTip("§3Mission: §cKill §c". $config->get("SR"));
                                     $name = $player->getName();
                                     $player->sendMessage("§aGood luck " . $name);
+                                    $compass = ItemFactory::get(Item::COMPASS);
+                                    $compass->setCustomName("§9SpeedRunner §2Tracker");
+                                    $unbreaking = new EnchantmentInstance(Enchantment::getEnchantment(Enchantment::UNBREAKING), 10);
+                                    $compass->addEnchantment($unbreaking);
+                                    $player->getInventory()->setItem(8, $compass);
                                 } 
                             }
                         }else{
