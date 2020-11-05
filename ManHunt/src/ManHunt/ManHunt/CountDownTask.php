@@ -1,9 +1,9 @@
 <?php
 
-namespace WolfDen133_Besher\HvS;
+namespace ManHunt\ManHunt;
 
 use pocketmine\scheduler\Task;
-use WolfDen133_Besher\HvS\Main;
+use ManHunt\ManHunt\Main;
 use pocketmine\Player;
 use pocketmine\utils\Config;
 
