@@ -5,12 +5,16 @@ namespace ManHunt\ManHunt;
 use pocketmine\Server;
 use pocketmine\Player;
 
+use WolfDen133_Besher\HvS\CountDownTask;
+
+use pocketmine\network\mcpe\protocol\SetSpawnPositionPacket;
+
 use pocketmine\plugin\PluginBase;
 
-use pocketmine\event\player\PlayerJoinEvent;
-use pocketmine\event\player\PlayerQuitEvent;
+use pocketmine\event\player\PlayerDropItemEvent;
 use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\event\player\PlayerRespawnEvent;
+use pocketmine\event\player\PlayerInteractEvent;
 
 use pocketmine\item\Item;
 use pocketmine\item\ItemIds;
@@ -28,7 +32,10 @@ use pocketmine\event\Listener;
 
 use pocketmine\utils\Config;
 
+
 class Main extends PluginBase implements Listener{
+
+    protected static $instance;
 
     public function PName()
     {
@@ -60,7 +67,10 @@ class Main extends PluginBase implements Listener{
                         $config->set("GS", "false");
                         $config->save();
                     }  
-                } 
+                } else {
+                    foreach($this->getServer()->getOnlinePlayers() as $player){
+                    }
+                }
             } else {
                 $player = $event->getPlayer();
                 if ($config->get("SR") == $player->getName()){
@@ -72,13 +82,16 @@ class Main extends PluginBase implements Listener{
                     }  
                 } 
             }
+            $compass = ItemFactory::get(Item::COMPASS);
+            $player->getInventory()->remove($compass);
         }
     }
     
     public function onRespawn(PlayerRespawnEvent $event){
         $player = $event->getPlayer();
         $config = new Config($this->getDataFolder() . "config.yml", Config::YAML);
-        if (!$config->get("SR") == $player){
+        if ($config->get("SR") == $player){
+        } else {
             if ($config->get("GS") == "true"){
                 $compass = ItemFactory::get(Item::COMPASS);
                 $compass->setCustomName("§9SpeedRunner §2Tracker");
@@ -87,14 +100,16 @@ class Main extends PluginBase implements Listener{
                 $player->getInventory()->setItem(8, $compass);
             }
         }
+        
     }
-    public function onCompassDrop(PlayerDropItemEvent $devent, PlayerItemHeldEvent $ievent){
-        $player = $devent->getPlayer();
-        $item = $ievent->getItem();
-        if($id = $item->getId()){
-            $devent->setCancelled(true);
+    public function onCompassDrop(PlayerDropItemEvent $event){
+        $player = $event->getPlayer();
+        $HandItem = $player->getInventory()->getItemInHand();
+        $HandItem = $HandItem->getId();
+        if($HandItem == 345){
+            $event->setCancelled(true);
         }
-    }
+    }    
     public function onCommand(CommandSender $sender, Command $cmd, String $label, Array $args) : bool {
 
 		switch($cmd->getName()){
@@ -151,9 +166,14 @@ class Main extends PluginBase implements Listener{
                                     $tp = $p->teleport($this->getServer()->getLevelByName($world)->getSafeSpawn());
                                 }
                                 $tp;
-                                $this->getScheduler()->scheduleRepeatingTask(new CountDownTimer, 10);
-                                $name = $player->getName();
-                                $player->sendMessage("§aGood luck " . $name);
+                                $this->getScheduler()->scheduleRepeatingTask(new CountDownTask($this, $p), 20);
+                                if (!$config->get("SR" == $player)){
+                                    $compass = ItemFactory::get(Item::COMPASS);
+                                    $compass->setCustomName("§9SpeedRunner §2Tracker");
+                                    $unbreaking = new EnchantmentInstance(Enchantment::getEnchantment(Enchantment::UNBREAKING), 10);
+                                    $compass->addEnchantment($unbreaking);
+                                    $player->getInventory()->setItem(8, $compass);
+                                }
                             }
                         }else{
                             $player->sendMessage("§cThere is no SpeedRunner set!");
@@ -167,8 +187,11 @@ class Main extends PluginBase implements Listener{
                         foreach ($this->getServer()->getOnlinePlayers() as $p){
                             $p->teleport($this->getServer()->getDefaultLevel()->getSafeSpawn());
                         }
+                        $player->sendMessage("§cYou have stopped the game!");
                         $config->set("GS", "false");
                         $config->save();
+                        $compass = ItemFactory::get(Item::COMPASS);
+                        $player->getInventory()->remove($compass);
                     } else {
                         $player->sendMessage("§cGame hasent started yet!");
                     }
@@ -239,5 +262,8 @@ class Main extends PluginBase implements Listener{
         $form->addDropdown("§ePick a Level!", $list);
 		$form->sendToPlayer($player);
 		return $form;
+    }
+    public static function getInstance():self{
+		return self::$instance;
 	}
 }
